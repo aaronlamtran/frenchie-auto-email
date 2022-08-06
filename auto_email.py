@@ -4,6 +4,7 @@ from pymongo import MongoClient
 import pymongo
 from dotenv import load_dotenv
 import os
+from operator import attrgetter, itemgetter
 load_dotenv()
 MONGO_USER = os.getenv('MONGO_USER')
 MONGO_PW = os.getenv('MONGO_PW')
@@ -20,10 +21,12 @@ def main():
     cursor = waitlists.find({})
 
     for document in cursor:
-      print(document)
-      mylist.append(document)
-    tilde = "~" * 30
-    print(tilde)
+        _id, name, email, phone, dog, waitlistPosition, createdAt, updatedAt = itemgetter('_id', 'name', 'email', 'phone', 'dog', 'waitlistPosition', 'createdAt', 'updatedAt')(document)
+        print(name, email, phone, createdAt)
+
+        # mylist.append(document)
+    # tilde = "~" * 30
+    print("~" * 30)
 
     for collection in all_collections:
       print(collection)
@@ -31,3 +34,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# {'_id': ObjectId('62eaffade9c26e12d5145f64'), 'name': 'Jen Foster', 'email': 'soccerjen2000@hotmail.com', 'phone': '+1 (760) 855-8311', 'dog': ObjectId('6258e5b0e351100c23230d02'), 'waitlistPosition': 40, 'createdAt': datetime.datetime(2022, 8, 3, 23, 7, 25, 133000), 'updatedAt': datetime.datetime(2022, 8, 3, 23, 7, 25, 133000), '__v': 0}
